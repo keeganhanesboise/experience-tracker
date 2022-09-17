@@ -4,7 +4,7 @@ var User = require('../models/user'); // user schema
 var jwt = require('jsonwebtoken');	// authorize users
 
 // Route for logging in as an exisiting user
-router.post('/login', (req, res) => {
+router.post('/', (req, res) => {
     const userLoggingIn = req.body;
 
     // Search database for username
@@ -49,3 +49,5 @@ router.post('/login', (req, res) => {
             })
         })
 });
+
+module.exports = router;

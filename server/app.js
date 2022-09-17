@@ -12,18 +12,19 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 app.use(bodyParser.json(), urlencodedParser);
 app.use(cors());
 app.use('/register', require('./routes/register'));
+app.use('/login', require('./routes/login'));
 
 const dbURI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.rb2mrgc.mongodb.net/?retryWrites=true&w=majority`
 
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 	.then((res) => {
-		app.listen(process.env.PORT, () => console.log("Server is live"));
+		app.listen(5000, () => console.log("Server is live"));
 	})
 	.catch(err => console.log(err));
 
 // Middleware function to verfiy the json web token
 function verifyJWT(req, res, next) {
-    const token = req.headers["x-access-token"]?.split(' ')[1]; // Split to remove Bearer
+    const token = req.headers["x-access-token"]?.split(' ')[1]; // Split to remove 'Bearer'
 
     if (token) {
         jwt.verify(token, process.env.PASSPORTSECRET, (err, decoded) => {

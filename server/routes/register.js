@@ -5,7 +5,7 @@ var User = require('../models/user'); // user schema
 // Route for registering a new user
 router.post('/', async (req, res) => {
 	const user = req.body;
-
+    
 	// Verify user and email aren't already taken
 	const takenUser = await User.findOne({ username: user.username });
 	const takenEmail = await User.findOne({ email: user.email });
