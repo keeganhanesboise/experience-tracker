@@ -32,7 +32,7 @@ router.post('/', (req, res) => {
                         process.env.JWT_SECRET, // key used for encryption
                         {expiresIn: 86400}, // one day (in seconds)
                         (err, token) => {
-                            if (err) return res.json({ message: err });
+                            if (err) return res.json({ message: err })
                             return res.json({
                                 message: "Success",
                                 // other authentification methods include Basic and Digest 
