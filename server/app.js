@@ -21,6 +21,35 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 	})
 	.catch(err => console.log(err));
 
+// Middleware function to verfiy the json web token
+function verifyJWT(req, res, next) {
+    const token = req.headers["x-access-token"]?.split(' ')[1]; // Split to remove Bearer
+
+    if (token) {
+        jwt.verify(token, process.env.PASSPORTSECRET, (err, decoded) => {
+            if (err) return res.json({
+                isLoggedIn: false,
+                message: "Failed to Authenticate"
+            })
+            req.user = {};
+            req.user.id = decoded.id;
+            req.user.username = decoded.username;
+            req.user.email = decoded.email;
+            next();
+        })
+    } else {
+        res.json({ message: "Incorrect Token Given", isLoggedIn: false });
+    }
+}
+
 app.get('/', function (req, res) {
 	res.send("Experience Tracker");
 });
+
+app.get('/getUsername', verifyJWT, (req, res) => {
+	res.json({ isLoggedIn: true, username: req.user.username });
+});
+
+app.get('/getEmail', verifyJWT, (req, res) => {
+	res.json({ isLoggedIn: true, email: req.user.email });
+})

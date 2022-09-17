@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt');	// hashes pass saved to database and verifies lo
 var User = require('../models/user'); // user schema
 
 // Route for registering a new user
-app.post('/', async (req, res) => {
+router.post('/', async (req, res) => {
 	const user = req.body;
 
 	// Verify user and email aren't already taken
