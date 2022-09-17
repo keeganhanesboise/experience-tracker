@@ -30,7 +30,7 @@ function verifyJWT(req, res, next) {
         jwt.verify(token, process.env.PASSPORTSECRET, (err, decoded) => {
 			if (err) return res.json({
                 isLoggedIn: false,
-                message: err
+                message: "Failed to Authenticate"
             })
             req.user = {};
             req.user.id = decoded.id;
@@ -42,10 +42,6 @@ function verifyJWT(req, res, next) {
         res.json({ message: "Incorrect Token Given", isLoggedIn: false });
     }
 }
-
-app.get('/', function (req, res) {
-	res.send("Experience Tracker");
-});
 
 app.get('/isUserAuth', verifyJWT, (req, res) => {
 	res.json({ isLoggedIn: true, username: req.user.username});
