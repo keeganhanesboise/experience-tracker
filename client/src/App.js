@@ -43,7 +43,13 @@ function App() {
       <h2>User Info:</h2>
       Username: <strong>{username}</strong><br></br>
       Email: <strong>{email}</strong><br></br>
-      {loggedIn ? <button onClick={handleClick}>log out</button> : <Link to="/login"><button>Log in</button></Link>}
+      {loggedIn ? 
+        <button onClick={handleClick}>log out</button> : 
+        <div>
+          <Link to="/login"><button>Log in</button></Link>
+          <Link to="/register"><button>Sign up</button></Link>
+        </div>
+      }
     </div>
   );
 }
