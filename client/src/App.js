@@ -4,7 +4,7 @@ import './App.css';
 import axios from 'axios';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState();
+  const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
 
@@ -16,7 +16,7 @@ function App() {
   }
 
   useEffect(() => {
-    if (localStorage.getItem('token')) {
+    if (localStorage.getItem('token') && localStorage.getItem('token') != 'undefined') {
       const options = {
         method: 'get',
         url: 'http://localhost:5000/getUserInfo',
@@ -40,11 +40,14 @@ function App() {
   return (
     <div className="App">
       <h1>Experience Tracker</h1>
-      <h2>User Info:</h2>
-      Username: <strong>{username}</strong><br></br>
-      Email: <strong>{email}</strong><br></br>
       {loggedIn ? 
-        <button onClick={handleClick}>log out</button> : 
+        <div>
+        <h2>User Info:</h2>
+        Username: <strong>{username}</strong><br></br>
+        Email: <strong>{email}</strong><br></br>
+        <button onClick={handleClick}>log out</button>
+        </div> 
+        : 
         <div>
           <Link to="/login"><button>Log in</button></Link>
           <Link to="/register"><button>Sign up</button></Link>
