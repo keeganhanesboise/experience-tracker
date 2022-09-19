@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Navbar from './navbar';
 
 function Register() {
     const navigate = useNavigate();
@@ -59,17 +60,31 @@ function Register() {
         }
 
         axios(options)
-        .then(res => res.data.success ? handleLogin(userData) : null)
+        .then(res => res.data.success ? handleLogin(userData) : console.log("Failed to create user"))
         .catch(err => console.log(err))
     }
 
     return (
-        <form onSubmit={e => handleRegister(e)}>
-            <input required type="email"/>
-            <input required type="username"/>
-            <input required type="password"/>
-            <input type="submit" value="Register"/>
-        </form>
+        <div>
+            <Navbar/>
+            <div className='container'>
+                <form onSubmit={e => handleRegister(e)}>
+                    <div className='mb-3'>
+                        <label htmlFor='emailSignup' className='form-label'>Email</label>
+                        <input required type="email" className='form-control' id='emailSignup'></input>
+                    </div>
+                    <div className='mb-3'>
+                        <label htmlFor='usernameSignup' className='form-label'>Username</label>
+                        <input required type="username" className='form-control' id='usernameSignup'></input>
+                    </div>
+                    <div className='mb-3'>
+                        <label htmlFor='passwordSignup' className='form-label'>Password</label>
+                        <input required type="password" className='form-control' id='passwordSignup'></input>
+                    </div>
+                    <input type="submit" className='btn btn-primary' value="Register"/>        
+                </form>
+            </div>
+        </div>
     )
 }
 

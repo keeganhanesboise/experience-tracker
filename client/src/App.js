@@ -1,20 +1,12 @@
-import { Link } from 'react-router-dom';
-import { useState, useEffect } from 'react';
 import './App.css';
+import Navbar from './components/navbar';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
   const [username, setUsername] = useState();
-  const [email, setEmail] = useState();
-
-  function handleLogOut() {
-    localStorage.removeItem('token');
-    setEmail();
-    setUsername();
-    setLoggedIn(false);
-  }
-
+  
   function handleCreateExperience(e) {
     e.preventDefault();
 
@@ -52,7 +44,6 @@ function App() {
       axios(options)
       .then(res => {
         setUsername(res.data.username);
-        setEmail(res.data.email);
       })
       .catch(err => console.log(err));
       setLoggedIn(true);
@@ -63,24 +54,32 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Experience Tracker</h1>
+      <Navbar />
       {loggedIn ? 
-        <div>
-          <h2>User Info:</h2>
-          Username: <strong>{username}</strong><br></br>
-          Email: <strong>{email}</strong><br></br>
-          <button onClick={handleLogOut}>log out</button>
-          <form onSubmit={e => handleCreateExperience(e)}>
-              <input required></input>
-              <input required></input>
-              <input required></input>
-              <input type="submit" value="Create Experience"/>        
-          </form>
-        </div> 
+        <div className='container-fluid'>
+          <div className='row'>
+            <div className='col-4'>
+            <form onSubmit={e => handleCreateExperience(e)}>
+              <div className='mb-3'>
+                  <label htmlFor='experienceTitle' className='form-label'>Title</label>
+                  <input required className='form-control' id='experienceTitle'></input>
+              </div>
+              <div className='mb-3'>
+                  <label htmlFor='experienceLocation' className='form-label'>Location</label>
+                  <input className='form-control' id='experienceLocation'></input>
+              </div>
+              <div className='mb-3'>
+                  <label htmlFor='experienceDescription' className='form-label'>Description</label>
+                  <input className='form-control' id='experienceDescription'></input>
+              </div>
+              <input type="submit" className='btn btn-primary' value="Create Experience"/>        
+            </form>
+            </div> 
+          </div>
+        </div>
         : 
         <div>
-          <Link to="/login"><button>Log in</button></Link>
-          <Link to="/register"><button>Sign up</button></Link>
+          Log in/Sign up to create experience
         </div>
       }
     </div>

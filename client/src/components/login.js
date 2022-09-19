@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './navbar';
 
 function Login() {
     const navigate = useNavigate();
@@ -48,11 +49,22 @@ function Login() {
     })
 
     return (
-        <form onSubmit={e => handleLogin(e)}>
-            <input required type="username"></input>
-            <input required type="password"></input>
-            <input type="submit" value="Submit"/>        
-        </form>
+        <div>
+            <Navbar />
+            <div className='container'>
+                <form onSubmit={e => handleLogin(e)}>
+                    <div className='mb-3'>
+                        <label htmlFor='usernameLogin' className='form-label'>Username</label>
+                        <input required type="username" className='form-control' id='usernameLogin'></input>
+                    </div>
+                    <div className='mb-3'>
+                        <label htmlFor='passwordLogin' className='form-label'>Password</label>
+                        <input required type="password" className='form-control' id='passwordLogin'></input>
+                    </div>
+                    <input type="submit" className='btn btn-primary' value="Submit"/>        
+                </form>
+            </div>
+        </div>
     )
 }
 
