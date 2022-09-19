@@ -15,7 +15,7 @@ function Register() {
         }
 
         axios(options)
-        .then(data => data.data.isLoggedIn ? navigate('/') : null)
+        .then(data => data.data.isLoggedIn ? navigate('/') : navigate('/login'))
     }
 
     function handleLogin(userData) {
@@ -60,7 +60,7 @@ function Register() {
         }
 
         axios(options)
-        .then(res => res.data.success ? handleLogin(userData) : console.log("Failed to create user"))
+        .then(res => res.data.success ? handleLogin(userData) : console.log(res))
         .catch(err => console.log(err))
     }
 

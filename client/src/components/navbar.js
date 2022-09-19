@@ -3,13 +3,12 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function Navbar() {
-    const [loggedIn, setLoggedIn] = useState(false);
     const [username, setUsername] = useState();
   
     function handleLogOut() {
       localStorage.removeItem('token');
       setUsername();
-      setLoggedIn(false);
+      window.location.reload(false);
     }
     
     useEffect(() => {
@@ -27,9 +26,6 @@ function Navbar() {
             setUsername(res.data.username);
           })
           .catch(err => console.log(err));
-          setLoggedIn(true);
-        } else {
-          setLoggedIn(false);
         }
       }, []);
     
@@ -43,12 +39,12 @@ function Navbar() {
                     </button>
                     <div className="offcanvas offcanvas-end text-bg-dark" tabIndex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
                         <div className="offcanvas-header">
-                        {loggedIn ? <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">Hello {username}!</h5> 
+                        {localStorage.getItem('token') ? <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">Hello {username}!</h5> 
                         : <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">Log In or Sign Up</h5>}
                         <button type="button" className="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                         </div>
                         <div className="offcanvas-body">
-                        {loggedIn ? 
+                        {localStorage.getItem('token') ? 
                             <button type="button" onClick={handleLogOut} className='btn btn-primary'>logout</button> 
                             :
                             <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">

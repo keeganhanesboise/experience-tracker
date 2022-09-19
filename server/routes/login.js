@@ -8,7 +8,7 @@ router.post('/', (req, res) => {
     const userLoggingIn = req.body;
 
     // Search database for username
-    User.findOne({ username: userLoggingIn.username })
+    User.findOne({ username: userLoggingIn.username.toLowerCase() })
         .then((dbUser) => {
             if (!dbUser) {
                 return res.json({

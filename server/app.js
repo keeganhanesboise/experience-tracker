@@ -14,6 +14,7 @@ app.use(cors());
 app.use('/register', require('./routes/register'));
 app.use('/login', require('./routes/login'));
 app.use('/createExperience', require('./routes/createExperience'));
+app.use('/fetchExperience', require('./routes/fetchExperience'));
 
 const dbURI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.rb2mrgc.mongodb.net/?retryWrites=true&w=majority`
 
@@ -49,5 +50,5 @@ app.get('/isUserAuth', verifyJWT, (req, res) => {
 });
 
 app.get('/getUserInfo', verifyJWT, (req, res) => {
-	res.json({ isLoggedIn: true, username: req.user.username, email: req.user.email });
+	res.json({ isLoggedIn: true, username: req.user.username, email: req.user.email, id: req.user.id});
 });

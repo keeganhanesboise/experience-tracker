@@ -9,7 +9,7 @@ router.post('/', async (req, res) => {
         title: newExperience.title,
         location: newExperience.location,
         description: newExperience.description,
-        user: newExperience.user,
+        userId: newExperience.userId,
     });
 
     dbExperience.save();
