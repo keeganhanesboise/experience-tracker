@@ -8,15 +8,39 @@ function App() {
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
 
-  function handleClick() {
+  function handleLogOut() {
     localStorage.removeItem('token');
     setEmail();
     setUsername();
     setLoggedIn(false);
   }
 
+  function handleCreateExperience(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    
+    const options = {
+      method: 'post',
+      url: 'http://localhost:5000/createExperience',
+      data: {
+        title: form[0].value,
+        location: form[1].value,
+        description: form[2].value,
+        user: username,
+      },
+      headers: {
+          'Content-type': 'application/json'
+      }
+    }
+
+    axios(options)
+    .then(res => console.log(res))
+    .catch(err => console.log(err))
+  }
+
   useEffect(() => {
-    if (localStorage.getItem('token') && localStorage.getItem('token') != 'undefined') {
+    if (localStorage.getItem('token') && localStorage.getItem('token') !== 'undefined') {
       const options = {
         method: 'get',
         url: 'http://localhost:5000/getUserInfo',
@@ -42,10 +66,16 @@ function App() {
       <h1>Experience Tracker</h1>
       {loggedIn ? 
         <div>
-        <h2>User Info:</h2>
-        Username: <strong>{username}</strong><br></br>
-        Email: <strong>{email}</strong><br></br>
-        <button onClick={handleClick}>log out</button>
+          <h2>User Info:</h2>
+          Username: <strong>{username}</strong><br></br>
+          Email: <strong>{email}</strong><br></br>
+          <button onClick={handleLogOut}>log out</button>
+          <form onSubmit={e => handleCreateExperience(e)}>
+              <input required></input>
+              <input required></input>
+              <input required></input>
+              <input type="submit" value="Create Experience"/>        
+          </form>
         </div> 
         : 
         <div>
