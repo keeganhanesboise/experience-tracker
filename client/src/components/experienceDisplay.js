@@ -8,6 +8,7 @@ function ExperienceDisplay(props) {
                         <th scope="col">Title</th>
                         <th scope="col">Location</th>
                         <th scope="col">Description</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>

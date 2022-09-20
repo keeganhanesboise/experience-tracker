@@ -48,48 +48,73 @@ function App() {
       .catch((err) => console.log(err));
   }
 
-    /**
+  /**
    * Fetch experiences for logged in user
    */
-     async function fetchExperience() {
-      if (user) {
-        const options = {
-          method: "get",
-          url: `http://localhost:5000/fetchExperience/${user.id}`,
-          headers: {
-            "Content-type": "application/json",
-          },
-        };
-  
-        axios(options)
-          .then((res) => {
-            if (!res.data.message) {
-              handleExperienceData(res.data);
-            }
-          })
-          .catch((err) => console.log(err));
-      }
+  async function fetchExperience() {
+    if (user) {
+      const options = {
+        method: "get",
+        url: `http://localhost:5000/fetchExperience/${user.id}`,
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+
+      axios(options)
+        .then((res) => {
+          handleExperienceData(res.data);
+        })
+        .catch((err) => console.log(err));
     }
+  }
+
+  /**
+   * Delete an experience
+   * @param {number} id - unqiue experience identifier 
+   */
+  function removeExperience(id) {
+    const options = {
+      method: "get",
+      url: `http://localhost:5000/deleteExperience/${id}`,
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    axios(options)
+      .then((res) => {
+        if (!res.data.error) {
+          fetchExperience();
+        }
+      })
+      .catch((err) => console.log(err));
+  }
   
       /**
    * Create and set experience JSX elements
    * @param {array} data - users experiences
    */
   function handleExperienceData(data) {
-    let expereinceArray = [];
-    let rowCounter = 1;
-    data.forEach((experience) => {
-      expereinceArray.push(
-        <tr key={experience._id}>
-          <th scope="row">{rowCounter}</th>
-          <td>{experience.title}</td>
-          <td>{experience.location}</td>
-          <td>{experience.description}</td>
-        </tr>
-      );
-      rowCounter++;
-    });
-    setExperienceData(expereinceArray);
+    if (!data.message) {
+      let expereinceArray = [];
+      let rowCounter = 1;
+      data.forEach((experience) => {
+        expereinceArray.push(
+          <tr key={experience._id}>
+            <th scope="row">{rowCounter}</th>
+            <td>{experience.title}</td>
+            <td>{experience.location}</td>
+            <td>{experience.description}</td>
+            <td type="button" onClick={() => removeExperience(experience._id)} className="btn btn-sm">x</td>
+          </tr>
+        );
+        rowCounter++;
+      });
+      setExperienceData(expereinceArray);
+    } else {
+      setExperienceData();
+    }
   }
 
   /**
@@ -120,6 +145,7 @@ function App() {
 
   useEffect(() => {
     fetchExperience();
+    // eslint-disable-next-line
   }, [user]);
 
 
