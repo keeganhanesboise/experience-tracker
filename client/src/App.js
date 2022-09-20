@@ -165,8 +165,10 @@ function App() {
           </div>
         </div>
       ) : (
-        <div>
-          Log in/Sign up to log and keep track of your favorite life experiences
+        <div className='container-fluid' style={{ maxWidth: '500px' }}>
+          <p>
+            Log in/Sign up to log and keep track of your favorite life experiences
+          </p>
         </div>
       )}
     </div>

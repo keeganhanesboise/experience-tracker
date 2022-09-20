@@ -53,7 +53,8 @@ function Login() {
     return (
         <div>
             <Navbar />
-            <div className='container'>
+            <div className='container-fluid' style={{ maxWidth: '500px' }}>
+                <h2>Log In</h2><br></br>
                 <form onSubmit={e => handleLogin(e)}>
                     <div className='mb-3'>
                         <label htmlFor='usernameLogin' className='form-label'>Username</label>
