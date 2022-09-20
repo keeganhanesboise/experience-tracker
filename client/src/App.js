@@ -3,6 +3,7 @@ import axios from "axios";
 import Navbar from "./components/navbar";
 import ExperienceForm from "./components/experienceForm";
 import ExperienceDisplay from "./components/experienceDisplay";
+import CollectionForm from "./components/collectionForm";
 import "./App.css";
 
 function App() {
@@ -143,6 +144,30 @@ function App() {
     }
   }
 
+  function handleCreateCollection(e) {
+    e.preventDefault();
+    const form = e.target;
+
+    const options = {
+      method: "post",
+      url: "http://localhost:5000/createCollection",
+      data: {
+        title: form[0].value,
+        experiences: [],
+        userId: user.id,
+      },
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    axios(options)
+      .then((res) => console.log(res.data.message))
+      .catch((err) => console.log(err));
+
+      e.target.reset();
+  }
+
   useEffect(() => {
     fetchUser();
   }, []);
@@ -159,6 +184,7 @@ function App() {
       <Navbar />
       {checkToken() ? (
         <div className="container-fluid" style={{ maxWidth: '1500px' }}>
+          <CollectionForm handleCreateCollection={handleCreateCollection}/>
           <div className="row">
             <ExperienceForm handleCreateExperience={handleCreateExperience}/>
             <ExperienceDisplay experiences={experienceData}/>
