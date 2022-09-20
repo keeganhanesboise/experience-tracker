@@ -110,10 +110,14 @@ function App() {
     fetchExperience();
   }, [user]);
 
+  function checkToken() {
+    return localStorage.getItem("token") && localStorage.getItem("token") !== 'undefined';
+  }
+
   return (
     <div className="App">
       <Navbar />
-      {localStorage.getItem("token") ? (
+      {checkToken() ? (
         <div className="container-fluid">
           <div className="row">
             <div className="col-4">
