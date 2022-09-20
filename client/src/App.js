@@ -156,7 +156,7 @@ function App() {
     <div className="App">
       <Navbar />
       {checkToken() ? (
-        <div className="container-fluid">
+        <div className="container-fluid" style={{ maxWidth: '1500px' }}>
           <div className="row">
             <ExperienceForm handleCreateExperience={handleCreateExperience}/>
             <ExperienceDisplay experiences={experienceData}/>
@@ -164,7 +164,7 @@ function App() {
         </div>
       ) : (
         <div>
-          Log in/Sign up to log and keep track of your favorite experiences
+          Log in/Sign up to log and keep track of your favorite life experiences
         </div>
       )}
     </div>

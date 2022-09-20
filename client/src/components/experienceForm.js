@@ -9,7 +9,7 @@ function ExperienceForm(props) {
         <form onSubmit={(e) => props.handleCreateExperience(e)}>
           <div className="mb-3">
             <label htmlFor="experienceTitle" className="form-label">
-              Title
+              Experience Name
             </label>
             <input
               required
