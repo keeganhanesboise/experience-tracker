@@ -1,9 +1,4 @@
 function ExperienceForm(props) {
-  // function handleSubmit(e) {
-
-  //   props.handleCreateExperience(e);
-  // }
-
   return (
     <div className="col-4">
         <form onSubmit={(e) => props.handleCreateExperience(e)}>
@@ -16,6 +11,12 @@ function ExperienceForm(props) {
               className="form-control"
               id="experienceTitle"
             ></input>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="experienceDate" className="form-label">
+              Date
+            </label>
+            <input type="date" className="form-control" id="experienceLocation"></input>
           </div>
           <div className="mb-3">
             <label htmlFor="experienceLocation" className="form-label">

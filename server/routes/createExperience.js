@@ -7,6 +7,7 @@ router.post('/', async (req, res) => {
 
     const dbExperience = new Experience({
         title: newExperience.title,
+        date: newExperience.date,
         location: newExperience.location,
         description: newExperience.description,
         userId: newExperience.userId,

@@ -29,8 +29,9 @@ function App() {
       url: "http://localhost:5000/createExperience",
       data: {
         title: form[0].value,
-        location: form[1].value,
-        description: form[2].value,
+        date: form[1].value,
+        location: form[2].value,
+        description: form[3].value,
         userId: user.id,
       },
       headers: {
@@ -106,6 +107,7 @@ function App() {
           <tr key={experience._id}>
             <th scope="row">{rowCounter}</th>
             <td>{experience.title}</td>
+            <td>{experience.date}</td>
             <td>{experience.location}</td>
             <td>{experience.description}</td>
             <td type="button" onClick={() => removeExperience(experience._id)} className="btn btn-sm">x</td>

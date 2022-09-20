@@ -5,6 +5,10 @@ const experienceSchema = mongoose.Schema({
         type: String,
         required: true,
     },
+    date: {
+        type: Date,
+        required: false,
+    },
     location: {
         type: String,
         required: false,
