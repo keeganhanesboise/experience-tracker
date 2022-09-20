@@ -1,7 +1,19 @@
 function ExperienceDisplay(props) {
     return (
         <div className="col-8">
-            {props.experiences}
+            <table className="table">
+                <thead>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Location</th>
+                        <th scope="col">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {props.experiences}
+                </tbody>
+            </table>
         </div>
     )
 }

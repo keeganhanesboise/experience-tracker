@@ -77,14 +77,17 @@ function App() {
    */
   function handleExperienceData(data) {
     let expereinceArray = [];
+    let rowCounter = 1;
     data.forEach((experience) => {
       expereinceArray.push(
-        <div key={experience._id}>
-          <h3>{experience.title}</h3>
-          <h3>{experience.location}</h3>
-          <h3>{experience.description}</h3>
-        </div>
+        <tr key={experience._id}>
+          <th scope="row">{rowCounter}</th>
+          <td>{experience.title}</td>
+          <td>{experience.location}</td>
+          <td>{experience.description}</td>
+        </tr>
       );
+      rowCounter++;
     });
     setExperienceData(expereinceArray);
   }
