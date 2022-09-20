@@ -7,6 +7,10 @@ function App() {
   const [user, setUser] = useState();
   const [experienceData, setExperienceData] = useState();
 
+  /**
+   * Create new experience from form
+   * @param {array} e - form data
+   */
   function handleCreateExperience(e) {
     e.preventDefault();
 
@@ -27,61 +31,83 @@ function App() {
     };
 
     axios(options)
-      .then((res) => console.log(res))
+      .then((res) => {
+        if (res.data.message) {
+          fetchExperience();
+        }
+      })
       .catch((err) => console.log(err));
   }
 
+  /**
+   * Create and set experience JSX elements
+   * @param {array} data - users experiences
+   */
   function handleExperienceData(data) {
     let expereinceArray = [];
     data.forEach((experience) => {
       expereinceArray.push(
-        <div key={experience.title}>
+        <div key={experience._id}>
           <h3>{experience.title}</h3>
           <h3>{experience.location}</h3>
           <h3>{experience.description}</h3>
         </div>
-      )
+      );
     });
     setExperienceData(expereinceArray);
   }
 
-  useEffect(() => {
-    if (localStorage.getItem('token') && localStorage.getItem('token') !== 'undefined') {
+  /**
+   * Fetch logged in user
+   */
+  function fetchUser() {
+    if (
+      localStorage.getItem("token") &&
+      localStorage.getItem("token") !== "undefined"
+    ) {
       const options = {
-        method: 'get',
-        url: 'http://localhost:5000/getUserInfo',
+        method: "get",
+        url: "http://localhost:5000/getUserInfo",
         headers: {
-          'x-access-token': localStorage.getItem('token')
-        }
-      }
-      
+          "x-access-token": localStorage.getItem("token"),
+        },
+      };
+
       axios(options)
-      .then(res => {
-        setUser(res.data);
-      })
-      .catch(err => console.log(err));
+        .then((res) => setUser(res.data))
+        .catch((err) => console.log(err));
     }
-  }, []);
+  }
 
-
-  useEffect(() => {
-    if(user) {
+  /**
+   * Fetch experiences for logged in user
+   */
+  async function fetchExperience() {
+    if (user) {
       const options = {
         method: "get",
         url: `http://localhost:5000/fetchExperience/${user.id}`,
         headers: {
           "Content-type": "application/json",
         },
-      }
-  
+      };
+
       axios(options)
         .then((res) => {
           if (!res.data.message) {
-            handleExperienceData(res.data)
+            handleExperienceData(res.data);
           }
         })
         .catch((err) => console.log(err));
     }
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  useEffect(() => {
+    fetchExperience();
   }, [user]);
 
   return (
@@ -127,13 +153,13 @@ function App() {
                 />
               </form>
             </div>
-            <div className="col-8">
-              {experienceData}
-            </div>
+            <div className="col-8">{experienceData}</div>
           </div>
         </div>
       ) : (
-        <div>Log in/Sign up to create experience</div>
+        <div>
+          Log in/Sign up to log and keep track of your favorite experiences
+        </div>
       )}
     </div>
   );
