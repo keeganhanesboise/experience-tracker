@@ -1,9 +1,10 @@
 import axios from 'axios';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './navbar';
 
 function Login() {
+    const [message, setMessage] = useState();
     const navigate = useNavigate();
 
     function handleToken() {
@@ -38,6 +39,7 @@ function Login() {
 
         axios(options)
         .then(res => {
+            setMessage(res.data.message);
             localStorage.setItem('token', res.data.token)
             handleToken();
         })
@@ -56,10 +58,12 @@ function Login() {
                     <div className='mb-3'>
                         <label htmlFor='usernameLogin' className='form-label'>Username</label>
                         <input required type="username" className='form-control' id='usernameLogin'></input>
+                        <small id="formHelp" className="form-text text-danger">{message}</small>
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='passwordLogin' className='form-label'>Password</label>
                         <input required type="password" className='form-control' id='passwordLogin'></input>
+                        <small id="formHelp" className="form-text text-danger">{message}</small>
                     </div>
                     <input type="submit" className='btn btn-primary' value="Submit"/>        
                 </form>

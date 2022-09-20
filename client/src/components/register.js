@@ -1,8 +1,10 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import axios from 'axios';
 import Navbar from './navbar';
 
 function Register() {
+    const [message, setMessage] = useState();
     const navigate = useNavigate();
 
     function handleToken() {
@@ -60,7 +62,7 @@ function Register() {
         }
 
         axios(options)
-        .then(res => res.data.success ? handleLogin(userData) : console.log(res))
+        .then(res => res.data.success ? handleLogin(userData) : setMessage(res.data.message))
         .catch(err => console.log(err))
     }
 
@@ -72,10 +74,12 @@ function Register() {
                     <div className='mb-3'>
                         <label htmlFor='emailSignup' className='form-label'>Email</label>
                         <input required type="email" className='form-control' id='emailSignup'></input>
+                        <small id="formHelp" className="form-text text-danger">{message}</small>
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='usernameSignup' className='form-label'>Username</label>
                         <input required type="username" className='form-control' id='usernameSignup'></input>
+                        <small id="formHelp" className="form-text text-danger">{message}</small>
                     </div>
                     <div className='mb-3'>
                         <label htmlFor='passwordSignup' className='form-label'>Password</label>

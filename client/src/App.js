@@ -22,7 +22,6 @@ function App() {
    */
    function handleCreateExperience(e) {
     e.preventDefault();
-
     const form = e.target;
 
     const options = {
@@ -46,6 +45,9 @@ function App() {
         }
       })
       .catch((err) => console.log(err));
+
+      e.target.reset();
+      e.target[0].focus();
   }
 
   /**
@@ -156,7 +158,7 @@ function App() {
       {checkToken() ? (
         <div className="container-fluid">
           <div className="row">
-            <ExperienceForm handleCreateExperience={handleCreateExperience} fetchExperience={fetchExperience}/>
+            <ExperienceForm handleCreateExperience={handleCreateExperience}/>
             <ExperienceDisplay experiences={experienceData}/>
           </div>
         </div>

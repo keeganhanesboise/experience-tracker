@@ -7,8 +7,8 @@ router.post('/', async (req, res) => {
 	const user = req.body;
 
 	// Verify user and email aren't already taken
-	const takenUser = await User.findOne({ username: user.username });
-	const takenEmail = await User.findOne({ email: user.email });
+	const takenUser = await User.findOne({ username: user.username.toLowerCase() });
+	const takenEmail = await User.findOne({ email: user.email.toLowerCase() });
 
 	if (takenUser || takenEmail) {
 		res.json({ message: "User/Email already taken", success: false});
