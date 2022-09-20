@@ -1,7 +1,7 @@
 var router = require('express').Router();
 var Experience = require('../models/experience'); // experience schema
 
-// Route for fetching user's experiences
+// Route for deleting user's experiences
 router.get('/:id', async (req, res) => {
     Experience.findByIdAndDelete(req.params.id, function (err, experience) {
         if (err) {
