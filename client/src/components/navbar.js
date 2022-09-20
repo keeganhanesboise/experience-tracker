@@ -12,10 +12,7 @@ function Navbar() {
   }
 
   useEffect(() => {
-    if (
-      localStorage.getItem("token") &&
-      localStorage.getItem("token") !== "undefined"
-    ) {
+    if (checkToken()) {
       const options = {
         method: "get",
         url: "http://localhost:5000/getUserInfo",
