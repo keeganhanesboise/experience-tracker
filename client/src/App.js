@@ -186,8 +186,14 @@ function App() {
           }
           collectionArray.push(
             <div key={collection._id}>
-              <h3>{collection.title}</h3>
-              <button type="button" onClick={() => removeCollection(collection)} className="btn btn-outline-danger btn-sm">Remove</button>
+              <div className="row justify-content-between" style={{ width: "100%" }}>
+                <div className="col">
+                  <h3>{collection.title}</h3>
+                </div>
+                <div className="col-1">
+                  <button type="button" onClick={() => removeCollection(collection)} className="btn btn-outline-danger btn-sm">Remove</button>
+                </div>
+              </div>
               <table className="table">
                   <thead>
                       <tr>
@@ -317,10 +323,15 @@ function App() {
       <Navbar />
       {checkToken() ? (
         <div className="container-fluid" style={{ maxWidth: '1500px' }}>
-          <CollectionForm handleCreateCollection={handleCreateCollection}/>
           <div className="row">
-            <ExperienceForm collectionSelect={collectionSelect} handleCreateExperience={handleCreateExperience}/>
-            <ExperienceDisplay collections={collectionElements}/>
+            <div className="col-4">
+              <ExperienceForm collectionSelect={collectionSelect} handleCreateExperience={handleCreateExperience}/>
+            </div>
+            <div className="col-8">
+              <CollectionForm handleCreateCollection={handleCreateCollection}/>
+              <br></br>
+              <ExperienceDisplay collections={collectionElements} />          
+            </div>
           </div>
         </div>
       ) : (
