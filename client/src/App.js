@@ -45,7 +45,15 @@ function App() {
     };
 
     axios(options)
-      .then((res) => window.location.reload(false))
+      .then((res) => {
+        getCollectionsAndExperiences()
+          .then(([collections, experiences]) => {
+            if (collections && experiences) {
+              setCollectionData(collections);
+              setExperienceData(experiences);
+            }        
+          })
+      })
       .catch((err) => console.log(err));
 
     e.target.reset();
@@ -66,10 +74,22 @@ function App() {
     };
 
     axios(options)
-      .then((res) => window.location.reload(false))
+      .then((res) => {
+        getCollectionsAndExperiences()
+          .then(([collections, experiences]) => {
+            if (collections && experiences) {
+              setCollectionData(collections);
+              setExperienceData(experiences);
+            }        
+          })
+      })
       .catch((err) => console.log(err));
   }
 
+  /**
+   * Create new collection
+   * @param {array} e 
+   */
   function handleCreateCollection(e) {
     e.preventDefault();
     const form = e.target;
@@ -88,7 +108,15 @@ function App() {
     };
 
     axios(options)
-      .then((res) => window.location.reload(false))
+      .then((res) => {
+        getCollectionsAndExperiences()
+          .then(([collections, experiences]) => {
+            if (collections && experiences) {
+              setCollectionData(collections);
+              setExperienceData(experiences);
+            }        
+          })
+      })
       .catch((err) => console.log(err));
 
       e.target.reset();
@@ -117,7 +145,7 @@ function App() {
     return expereinceArray;
   }
 
-  /**
+/**
  * Create and set collection JSX elements
  * @param {array} data - users collections
  */
