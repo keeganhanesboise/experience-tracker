@@ -88,13 +88,20 @@ function App() {
   }
 
     /**
-   * Delete an experience
-   * @param {number} id - unqiue experience identifier 
+   * Delete a collection
+   * @param {object} collection - entire collection object 
    */
-     function removeCollection(id) {
+    function removeCollection(collection) {
+      let experiences = collection.experiences;
+      if (experiences.length > 0) {
+        experiences.forEach((experience) => {
+          removeExperience(experience._id);
+        });
+      }
+
       const options = {
         method: "get",
-        url: `http://localhost:5000/deleteCollection/${id}`,
+        url: `http://localhost:5000/deleteCollection/${collection._id}`,
         headers: {
           "Content-type": "application/json",
         },
@@ -191,7 +198,7 @@ function App() {
           collectionArray.push(
             <div key={collection._id}>
               <h3>{collection.title}</h3>
-              <button type="button" onClick={() => removeCollection(collection._id)} className="btn btn-outline-danger btn-sm">Remove</button>
+              <button type="button" onClick={() => removeCollection(collection)} className="btn btn-outline-danger btn-sm">Remove</button>
               <table className="table">
                   <thead>
                       <tr>

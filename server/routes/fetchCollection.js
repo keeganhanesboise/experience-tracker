@@ -1,7 +1,7 @@
 var router = require('express').Router();
 var Collection = require('../models/collection'); // collection schema
 
-// Route for fetching user's collections
+// Route for fetching user's collection
 router.get('/:id', async (req, res) => {
     Collection.find({_id: req.params.id}, function (err, collection) {
         if (err) {
