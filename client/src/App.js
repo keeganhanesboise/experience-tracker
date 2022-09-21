@@ -20,6 +20,27 @@ function App() {
     );
   }
 
+  function updateData() {
+    getCollectionsAndExperiences()
+      .then(([collections, experiences]) => {
+        if (collections && experiences) {
+          if (!collections.message) {
+            setCollectionData(collections);
+          } else {
+            setCollectionData();
+            setCollectionElements();
+            setCollectionSelect();
+          }
+          if (!experiences.message) {
+            setExperienceData(experiences);
+          } else {
+            setExperienceData();
+            setCollectionElements();
+          }
+        }
+      })
+  }
+
   /**
    * Delete an experience
    * @param {number} id - unqiue experience identifier 
@@ -34,15 +55,7 @@ function App() {
     };
 
     axios(options)
-      .then((res) => {
-        getCollectionsAndExperiences()
-          .then(([collections, experiences]) => {
-            if (collections && experiences) {
-              setCollectionData(collections);
-              setExperienceData(experiences);
-            }        
-          })
-      })
+      .then((res) => updateData(res))
       .catch((err) => console.log(err));
   }
 
@@ -72,15 +85,7 @@ function App() {
     };
 
     axios(options)
-      .then((res) => {
-        getCollectionsAndExperiences()
-          .then(([collections, experiences]) => {
-            if (collections && experiences) {
-              setCollectionData(collections);
-              setExperienceData(experiences);
-            }        
-          })
-      })
+      .then((res) => updateData(res))
       .catch((err) => console.log(err));
 
     e.target.reset();
@@ -108,15 +113,7 @@ function App() {
       };
   
       axios(options)
-        .then((res) => {
-          getCollectionsAndExperiences()
-            .then(([collections, experiences]) => {
-              if (collections && experiences) {
-                setCollectionData(collections);
-                setExperienceData(experiences);
-              }        
-            })
-        })
+        .then((res) => updateData(res))
         .catch((err) => console.log(err));
     }
 
@@ -142,15 +139,7 @@ function App() {
     };
 
     axios(options)
-      .then((res) => {
-        getCollectionsAndExperiences()
-          .then(([collections, experiences]) => {
-            if (collections && experiences) {
-              setCollectionData(collections);
-              setExperienceData(experiences);
-            }        
-          })
-      })
+      .then((res) => updateData(res))
       .catch((err) => console.log(err));
 
       e.target.reset();
@@ -305,13 +294,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    getCollectionsAndExperiences()
-      .then(([collections, experiences]) => {
-        if (collections && experiences) {
-          setCollectionData(collections);
-          setExperienceData(experiences);
-        }        
-      })
+    updateData();
     // eslint-disable-next-line
   }, [user]);
 
