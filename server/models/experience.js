@@ -17,10 +17,14 @@ const experienceSchema = mongoose.Schema({
         type: String,
         required: false,
     },
-    userId: {
+    collectionId: {
         type: String,
         required: true,
     },
+    userId: {
+        type: String,
+        required: true,
+    }
 }, {timestamps: true})
 
 const Experience = mongoose.model('Experience', experienceSchema);

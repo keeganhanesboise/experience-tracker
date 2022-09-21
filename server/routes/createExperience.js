@@ -10,6 +10,7 @@ router.post('/', async (req, res) => {
         date: newExperience.date,
         location: newExperience.location,
         description: newExperience.description,
+        collectionId: newExperience.collectionId,
         userId: newExperience.userId,
     });
 

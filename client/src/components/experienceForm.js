@@ -30,11 +30,30 @@ function ExperienceForm(props) {
             </label>
             <input className="form-control" id="experienceDescription"></input>
           </div>
-          <input
-            type="submit"
-            className="btn btn-primary"
-            value="Create Experience"
-          />
+          {props.collectionSelect ?
+          <div>
+            <div className="mb-3">
+              <select required className="custom-select">
+                {props.collectionSelect}
+              </select>
+            </div>
+            <input
+              type="submit"
+              className="btn btn-primary"
+              value="Create Experience"
+            />
+          </div>
+          :
+          <div>
+            <p className="text-danger">Add a collection to create experiences</p>  
+            <input
+              type="submit"
+              className="btn btn-primary"
+              value="Create Experience"
+              disabled
+            />
+          </div>
+          }
         </form>
     </div>
   );
