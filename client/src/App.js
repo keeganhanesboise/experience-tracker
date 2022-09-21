@@ -153,11 +153,16 @@ function App() {
     let expereinceArray = [];
     let rowCounter = 1;
     data.forEach((experience) => {
+      let date;
+      if (experience.date) {
+        let index = experience.date.indexOf("T");
+        date = experience.date.slice(0, index);
+      }
       expereinceArray.push(
         <tr key={experience._id}>
           <th scope="row">{rowCounter}</th>
           <td>{experience.title}</td>
-          <td>{experience.date}</td>
+          <td>{date}</td>
           <td>{experience.location}</td>
           <td>{experience.description}</td>
           <td type="button" onClick={() => removeExperience(experience._id)} className="btn btn-sm">x</td>
