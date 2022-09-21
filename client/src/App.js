@@ -21,10 +21,37 @@ function App() {
   }
 
   /**
+   * Delete an experience
+   * @param {number} id - unqiue experience identifier 
+   */
+  function removeExperience(id) {
+    const options = {
+      method: "get",
+      url: `http://localhost:5000/deleteExperience/${id}`,
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    axios(options)
+      .then((res) => {
+        getCollectionsAndExperiences()
+          .then(([collections, experiences]) => {
+            if (collections && experiences) {
+              setCollectionData(collections);
+              setExperienceData(experiences);
+            }        
+          })
+      })
+      .catch((err) => console.log(err));
+  }
+
+  
+  /**
    * Create new experience from form
    * @param {array} e - form data
    */
-  function handleCreateExperience(e) {
+   function handleCreateExperience(e) {
     e.preventDefault();
     const form = e.target;
 
@@ -60,31 +87,31 @@ function App() {
     e.target[0].focus();
   }
 
-  /**
+    /**
    * Delete an experience
    * @param {number} id - unqiue experience identifier 
    */
-  function removeExperience(id) {
-    const options = {
-      method: "get",
-      url: `http://localhost:5000/deleteExperience/${id}`,
-      headers: {
-        "Content-type": "application/json",
-      },
-    };
-
-    axios(options)
-      .then((res) => {
-        getCollectionsAndExperiences()
-          .then(([collections, experiences]) => {
-            if (collections && experiences) {
-              setCollectionData(collections);
-              setExperienceData(experiences);
-            }        
-          })
-      })
-      .catch((err) => console.log(err));
-  }
+     function removeCollection(id) {
+      const options = {
+        method: "get",
+        url: `http://localhost:5000/deleteCollection/${id}`,
+        headers: {
+          "Content-type": "application/json",
+        },
+      };
+  
+      axios(options)
+        .then((res) => {
+          getCollectionsAndExperiences()
+            .then(([collections, experiences]) => {
+              if (collections && experiences) {
+                setCollectionData(collections);
+                setExperienceData(experiences);
+              }        
+            })
+        })
+        .catch((err) => console.log(err));
+    }
 
   /**
    * Create new collection
@@ -164,6 +191,7 @@ function App() {
           collectionArray.push(
             <div key={collection._id}>
               <h3>{collection.title}</h3>
+              <button type="button" onClick={() => removeCollection(collection._id)} className="btn btn-outline-danger btn-sm">Remove</button>
               <table className="table">
                   <thead>
                       <tr>

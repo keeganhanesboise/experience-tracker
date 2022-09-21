@@ -19,6 +19,7 @@ app.use('/deleteExperience', require('./routes/deleteExperience'));
 app.use('/createCollection', require('./routes/createCollection'));
 app.use('/fetchAllCollections', require('./routes/fetchAllCollections'));
 app.use('/fetchCollection', require('./routes/fetchCollection'));
+app.use('/deleteCollection', require('./routes/deleteCollection'));
 
 const dbURI = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASS}@cluster0.rb2mrgc.mongodb.net/?retryWrites=true&w=majority`
 
