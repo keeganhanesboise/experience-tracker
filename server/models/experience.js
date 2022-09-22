@@ -17,6 +17,10 @@ const experienceSchema = mongoose.Schema({
         type: String,
         required: false,
     },
+    image: {
+        type: String,
+        required: false,
+    },
     collectionId: {
         type: String,
         required: true,

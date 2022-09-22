@@ -11,6 +11,7 @@ function App() {
   const [experienceData, setExperienceData] = useState();
   const [collectionElements, setCollectionElements] = useState();
   const [collectionSelect, setCollectionSelect] = useState();
+  const [displayImage, setDisplayImage] = useState();
   const [user, setUser] = useState();
 
   function checkToken() {
@@ -41,6 +42,10 @@ function App() {
       })
   }
 
+  function getImage(name) {
+    setDisplayImage(`https://storage.googleapis.com/experience-images/${name}`);
+  }
+
   /**
    * Delete an experience
    * @param {number} id - unqiue experience identifier 
@@ -58,7 +63,6 @@ function App() {
       .then((res) => updateData(res))
       .catch((err) => console.log(err));
   }
-
   
   /**
    * Create new experience from form
@@ -68,6 +72,9 @@ function App() {
     e.preventDefault();
     const form = e.target;
 
+    // eslint-disable-next-line
+    const fileName = form[4].value.replace(/^.*[\\\/]/, '');
+
     const options = {
       method: "post",
       url: `http://localhost:5000/createExperience`,
@@ -76,7 +83,8 @@ function App() {
         date: form[1].value,
         location: form[2].value,
         description: form[3].value,
-        collectionId: form[4].value,
+        image: fileName,
+        collectionId: form[5].value,
         userId: user.id,
       },
       headers: {
@@ -165,6 +173,7 @@ function App() {
           <td>{date}</td>
           <td>{experience.location}</td>
           <td>{experience.description}</td>
+          <td type="button" onClick={() => getImage(experience.image)} className="btn btn-sm"><img style={{ width: "30px", height: "30px"}} alt="experience" src={`https://storage.googleapis.com/experience-images/${experience.image}`}></img></td>
           <td type="button" onClick={() => removeExperience(experience._id)} className="btn btn-sm">x</td>
         </tr>
       );
@@ -327,7 +336,7 @@ function App() {
     <div className="App">
       <Navbar />
       {checkToken() ? (
-        <div className="container-fluid" style={{ maxWidth: '1500px' }}>
+        <div className="container-fluid" style={{ maxWidth: '1500px', zIndex: "10" }}>
           <div className="row">
             <div className="col-4">
               <ExperienceForm collectionSelect={collectionSelect} handleCreateExperience={handleCreateExperience}/>
@@ -335,9 +344,15 @@ function App() {
             <div className="col-8">
               <CollectionForm handleCreateCollection={handleCreateCollection}/>
               <br></br>
-              <ExperienceDisplay collections={collectionElements} />          
+              <ExperienceDisplay collections={collectionElements} />  
             </div>
           </div>
+          {displayImage ? 
+          <div id="displayImage">
+            <br></br>
+            <button onClick={() => {setDisplayImage()}}>x</button>
+            <img src={displayImage} alt="experience" style={{ width: "100%", height: "auto" }}></img>
+          </div>: null}
         </div>
       ) : (
         <div className='container-fluid' style={{ maxWidth: '500px' }}>
