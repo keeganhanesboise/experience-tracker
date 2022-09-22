@@ -70,7 +70,9 @@ function Register() {
         <div>
             <Navbar/>
             <div className='container-fluid' style={{ maxWidth: '500px' }}>
-                <h2>Sign Up</h2><br></br>
+                <div className='row mb-3'>
+                    <h2>Sign Up</h2>                
+                </div>
                 <form onSubmit={e => handleRegister(e)}>
                     <div className='mb-3'>
                         <label htmlFor='emailSignup' className='form-label'>Email</label>

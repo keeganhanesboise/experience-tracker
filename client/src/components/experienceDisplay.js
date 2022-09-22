@@ -1,10 +1,10 @@
 function ExperienceDisplay(props) {
     return (
-        <div style={{ minHeight: "100%", backgroundColor: "#F5F5F5", padding: "20px"}} className="rounded">
+        <div className="rounded bg-light p-3">
             {props.collections ? props.collections :
-            <div style={{ color: "gray"}} >
+            <div className="text-secondary" >
                 <h3>Countries (example)</h3>
-                <table className="table" style={{ color: "gray"}} >
+                <table className="table text-secondary">
                     <thead>
                         <tr>
                             <th scope="col"></th>

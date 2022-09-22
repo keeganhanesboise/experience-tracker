@@ -3,12 +3,13 @@ import { useState } from "react";
 
 function ExperienceForm(props) {
   const [uploading, setUploading] = useState(false);
-  
+  const [invalidFile, setInvalidFile] = useState(false);
+
   function handleUploadFile(e) {
     setUploading(true);
     const file = e.target.files[0];
     if (file.size > 2000000) {
-      console.log("File must be smaller than 2MB");
+      setInvalidFile(true);
     } else {
       const formData = new FormData();
       formData.append("name", file.name);
@@ -54,13 +55,14 @@ function ExperienceForm(props) {
           </label>
           <input className="form-control" id="experienceDescription"></input>
         </div>
-        <div className="custom-file">
-          <input onChange={(e) => handleUploadFile(e)} type="file" className="custom-file-input" id="inputGroupFile01" />
+        <div className="mb-3">
+          <input onChange={(e) => handleUploadFile(e)} type="file" className="form-control" />
+          {invalidFile ? <p className="text-danger">File must be less than 2MB</p> : null}
         </div>
-        <br></br>
         {props.collectionSelect ?
         <div className="mb-3">
-          <select required className="custom-select">
+          <select required defaultValue="" className="form-select">
+            <option disabled value="">Choose Collection</option>
             {props.collectionSelect}
           </select>
         </div>

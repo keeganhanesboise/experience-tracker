@@ -22,24 +22,23 @@ function App() {
   }
 
   function updateData() {
-    getCollectionsAndExperiences()
-      .then(([collections, experiences]) => {
-        if (collections && experiences) {
-          if (!collections.message) {
-            setCollectionData(collections);
-          } else {
-            setCollectionData();
-            setCollectionElements();
-            setCollectionSelect();
-          }
-          if (!experiences.message) {
-            setExperienceData(experiences);
-          } else {
-            setExperienceData();
-            setCollectionElements();
-          }
+    getCollectionsAndExperiences().then(([collections, experiences]) => {
+      if (collections && experiences) {
+        if (!collections.message) {
+          setCollectionData(collections);
+        } else {
+          setCollectionData();
+          setCollectionElements();
+          setCollectionSelect();
         }
-      })
+        if (!experiences.message) {
+          setExperienceData(experiences);
+        } else {
+          setExperienceData();
+          setCollectionElements();
+        }
+      }
+    });
   }
 
   function getImage(name) {
@@ -48,7 +47,7 @@ function App() {
 
   /**
    * Delete an experience
-   * @param {number} id - unqiue experience identifier 
+   * @param {number} id - unqiue experience identifier
    */
   function removeExperience(id) {
     const options = {
@@ -63,17 +62,17 @@ function App() {
       .then((res) => updateData(res))
       .catch((err) => console.log(err));
   }
-  
+
   /**
    * Create new experience from form
    * @param {array} e - form data
    */
-   function handleCreateExperience(e) {
+  function handleCreateExperience(e) {
     e.preventDefault();
     const form = e.target;
 
     // eslint-disable-next-line
-    const fileName = form[4].value.replace(/^.*[\\\/]/, '');
+    const fileName = form[4].value.replace(/^.*[\\\/]/, "");
 
     const options = {
       method: "post",
@@ -100,34 +99,34 @@ function App() {
     e.target[0].focus();
   }
 
-    /**
+  /**
    * Delete a collection
-   * @param {object} collection - entire collection object 
+   * @param {object} collection - entire collection object
    */
-    function removeCollection(collection) {
-      let experiences = collection.experiences;
-      if (experiences.length > 0) {
-        experiences.forEach((experience) => {
-          removeExperience(experience._id);
-        });
-      }
-
-      const options = {
-        method: "get",
-        url: `http://localhost:5000/deleteCollection/${collection._id}`,
-        headers: {
-          "Content-type": "application/json",
-        },
-      };
-  
-      axios(options)
-        .then((res) => updateData(res))
-        .catch((err) => console.log(err));
+  function removeCollection(collection) {
+    let experiences = collection.experiences;
+    if (experiences.length > 0) {
+      experiences.forEach((experience) => {
+        removeExperience(experience._id);
+      });
     }
+
+    const options = {
+      method: "get",
+      url: `http://localhost:5000/deleteCollection/${collection._id}`,
+      headers: {
+        "Content-type": "application/json",
+      },
+    };
+
+    axios(options)
+      .then((res) => updateData(res))
+      .catch((err) => console.log(err));
+  }
 
   /**
    * Create new collection
-   * @param {array} e 
+   * @param {array} e
    */
   function handleCreateCollection(e) {
     e.preventDefault();
@@ -150,7 +149,7 @@ function App() {
       .then((res) => updateData(res))
       .catch((err) => console.log(err));
 
-      e.target.reset();
+    e.target.reset();
   }
 
   /**
@@ -173,8 +172,26 @@ function App() {
           <td>{date}</td>
           <td>{experience.location}</td>
           <td>{experience.description}</td>
-          <td type="button" onClick={() => getImage(experience.image)} className="btn btn-sm"><img style={{ width: "30px", height: "30px"}} alt="experience" src={`https://storage.googleapis.com/experience-images/${experience.image}`}></img></td>
-          <td type="button" onClick={() => removeExperience(experience._id)} className="btn btn-sm">x</td>
+          <td
+            type="button"
+            className="btn"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModal"
+            onClick={() => getImage(experience.image)}
+          >
+            <img
+              style={{ width: "30px", height: "30px" }}
+              alt="experience"
+              src={`https://storage.googleapis.com/experience-images/${experience.image}`}
+            ></img>
+          </td>
+          <td
+            type="button"
+            onClick={() => removeExperience(experience._id)}
+            className="btn btn-sm"
+          >
+            x
+          </td>
         </tr>
       );
       rowCounter++;
@@ -182,53 +199,62 @@ function App() {
     return expereinceArray;
   }
 
-/**
- * Create and set collection JSX elements
- * @param {array} data - users collections
- */
-    function handleCollectionData() {
-      if (!collectionData.message) {
-        let collectionArray = [];
-        let collectionSelectArray = [];
-        collectionData.forEach((collection) => {
-          collectionSelectArray.push(
-            <option key={collection._id} value={collection._id}>{collection.title}</option>
-          );
-          let experiences;
-          if (collection.experiences.length > 0) {
-            experiences = handleExperienceData(collection.experiences);
-          }
-          collectionArray.push(
-            <div key={collection._id}>
-              <div className="row justify-content-between" style={{ width: "100%" }}>
-                <div className="col">
-                  <h3>{collection.title}</h3>
-                </div>
-                <div className="col-1">
-                  <button type="button" onClick={() => removeCollection(collection)} className="btn btn-outline-danger btn-sm">Remove</button>
-                </div>
+  /**
+   * Create and set collection JSX elements
+   * @param {array} data - users collections
+   */
+  function handleCollectionData() {
+    if (!collectionData.message) {
+      let collectionArray = [];
+      let collectionSelectArray = [];
+      collectionData.forEach((collection) => {
+        collectionSelectArray.push(
+          <option key={collection._id} value={collection._id}>
+            {collection.title}
+          </option>
+        );
+        let experiences;
+        if (collection.experiences.length > 0) {
+          experiences = handleExperienceData(collection.experiences);
+        }
+        collectionArray.push(
+          <div key={collection._id}>
+            <div
+              className="row justify-content-between"
+              style={{ width: "100%" }}
+            >
+              <div className="col">
+                <h3>{collection.title}</h3>
               </div>
-              <table className="table">
-                  <thead>
-                      <tr>
-                          <th scope="col"></th>
-                          <th scope="col">Name</th>
-                          <th scope="col">Date</th>
-                          <th scope="col">Location</th>
-                          <th scope="col">Description</th>
-                          <th scope="col"></th>
-                      </tr>
-                  </thead>
-                  <tbody>
-                      {experiences}
-                  </tbody>
-              </table>
+              <div className="col-1">
+                <button
+                  type="button"
+                  onClick={() => removeCollection(collection)}
+                  className="btn btn-outline-danger btn-sm"
+                >
+                  Remove
+                </button>
+              </div>
             </div>
-          );
-        });
-        setCollectionElements(collectionArray);
-        setCollectionSelect(collectionSelectArray);
-      }
+            <table className="table">
+              <thead>
+                <tr>
+                  <th scope="col"></th>
+                  <th scope="col">Name</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Description</th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>{experiences}</tbody>
+            </table>
+          </div>
+        );
+      });
+      setCollectionElements(collectionArray);
+      setCollectionSelect(collectionSelectArray);
+    }
   }
 
   /**
@@ -238,16 +264,18 @@ function App() {
     if (!experienceData.message) {
       let tempCollectionData = collectionData;
       experienceData.forEach((experience) => {
-        const collection = tempCollectionData.find(element => element._id === experience.collectionId);
+        const collection = tempCollectionData.find(
+          (element) => element._id === experience.collectionId
+        );
         collection.experiences.push(experience);
-      })
+      });
       setCollectionData(tempCollectionData);
     }
   }
 
   /**
-  * Fetch experiences for logged in user
-  */
+   * Fetch experiences for logged in user
+   */
   function fetchExperience() {
     if (user) {
       const options = {
@@ -257,17 +285,19 @@ function App() {
           "Content-type": "application/json",
         },
       };
-  
+
       return axios(options)
-        .then((res) => {return res.data})
+        .then((res) => {
+          return res.data;
+        })
         .catch((err) => console.log(err));
     }
   }
 
   /**
-  * Fetch collections for logged in user
-  */
-    async function fetchAllCollections() {
+   * Fetch collections for logged in user
+   */
+  async function fetchAllCollections() {
     if (user) {
       const options = {
         method: "get",
@@ -278,14 +308,16 @@ function App() {
       };
 
       return axios(options)
-        .then((res) => {return res.data})
+        .then((res) => {
+          return res.data;
+        })
         .catch((err) => console.log(err));
     }
   }
 
   /**
-  * Fetch logged in user
-  */
+   * Fetch logged in user
+   */
   function fetchUser() {
     if (
       localStorage.getItem("token") &&
@@ -336,29 +368,56 @@ function App() {
     <div className="App">
       <Navbar />
       {checkToken() ? (
-        <div className="container-fluid" style={{ maxWidth: '1500px', zIndex: "10" }}>
+        <div className="container-xxl">
           <div className="row">
-            <div className="col-4">
-              <ExperienceForm collectionSelect={collectionSelect} handleCreateExperience={handleCreateExperience}/>
+            <div className="col-3">
+              <ExperienceForm
+                collectionSelect={collectionSelect}
+                handleCreateExperience={handleCreateExperience}
+              />
             </div>
-            <div className="col-8">
-              <CollectionForm handleCreateCollection={handleCreateCollection}/>
-              <br></br>
-              <ExperienceDisplay collections={collectionElements} />  
+            <div className="col-9">
+              <div className="container">
+                <CollectionForm
+                  handleCreateCollection={handleCreateCollection}
+                />
+                <br></br>
+                <ExperienceDisplay collections={collectionElements} />
+              </div>
             </div>
           </div>
-          {displayImage ? 
-          <div id="displayImage">
-            <br></br>
-            <button onClick={() => {setDisplayImage()}}>x</button>
-            <img src={displayImage} alt="experience" style={{ width: "100%", height: "auto" }}></img>
-          </div>: null}
+          <div
+            className="modal fade"
+            id="exampleModal"
+            tabIndex="-1"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div className="modal-dialog">
+              <div className="modal-content">
+                <div className="modal-body">
+                  <img
+                    src={displayImage}
+                    alt="experience"
+                    style={{ width: "100%", height: "auto" }}
+                  ></img>
+                </div>
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
-        <div className='container-fluid' style={{ maxWidth: '500px' }}>
-          <p>
-            Log in/Sign up to keep track of your favorite life experiences
-          </p>
+        <div className="container-fluid" style={{ maxWidth: "500px" }}>
+          <p>Log in/Sign up to keep track of your favorite life experiences</p>
         </div>
       )}
     </div>
