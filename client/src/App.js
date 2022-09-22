@@ -12,6 +12,7 @@ function App() {
   const [collectionElements, setCollectionElements] = useState();
   const [collectionSelect, setCollectionSelect] = useState();
   const [displayImage, setDisplayImage] = useState();
+  const [displayName, setDisplayName] = useState();
   const [user, setUser] = useState();
 
   function checkToken() {
@@ -41,8 +42,9 @@ function App() {
     });
   }
 
-  function getImage(name) {
-    setDisplayImage(`https://storage.googleapis.com/experience-images/${name}`);
+  function getImage(experience) {
+    setDisplayName(experience.title);
+    setDisplayImage(`https://storage.googleapis.com/experience-images/${experience.image}`);
   }
 
   /**
@@ -172,12 +174,13 @@ function App() {
           <td>{date}</td>
           <td>{experience.location}</td>
           <td>{experience.description}</td>
+          {experience.image ? 
           <td
             type="button"
             className="btn"
             data-bs-toggle="modal"
             data-bs-target="#exampleModal"
-            onClick={() => getImage(experience.image)}
+            onClick={() => getImage(experience)}
           >
             <img
               style={{ width: "30px", height: "30px" }}
@@ -185,6 +188,9 @@ function App() {
               src={`https://storage.googleapis.com/experience-images/${experience.image}`}
             ></img>
           </td>
+          :
+          null
+          }
           <td
             type="button"
             onClick={() => removeExperience(experience._id)}
@@ -395,6 +401,10 @@ function App() {
           >
             <div className="modal-dialog">
               <div className="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">{displayName}</h5>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
                 <div className="modal-body">
                   <img
                     src={displayImage}
