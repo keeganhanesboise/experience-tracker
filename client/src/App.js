@@ -5,6 +5,7 @@ import ExperienceForm from "./components/experienceForm";
 import ExperienceDisplay from "./components/experienceDisplay";
 import CollectionForm from "./components/collectionForm";
 import ImageModal from "./components/imageModal";
+import LoginPrompt from "./components/loginPrompt";
 import "./App.css";
 
 function App() {
@@ -55,7 +56,7 @@ function App() {
   function removeExperience(id) {
     const options = {
       method: "get",
-      url: `http://localhost:5000/deleteExperience/${id}`,
+      url: `/deleteExperience/${id}`,
       headers: {
         "Content-type": "application/json",
       },
@@ -79,7 +80,7 @@ function App() {
 
     const options = {
       method: "post",
-      url: `http://localhost:5000/createExperience`,
+      url: `/createExperience`,
       data: {
         title: form[0].value,
         date: form[1].value,
@@ -116,7 +117,7 @@ function App() {
 
     const options = {
       method: "get",
-      url: `http://localhost:5000/deleteCollection/${collection._id}`,
+      url: `/deleteCollection/${collection._id}`,
       headers: {
         "Content-type": "application/json",
       },
@@ -137,7 +138,7 @@ function App() {
 
     const options = {
       method: "post",
-      url: "http://localhost:5000/createCollection",
+      url: "/createCollection",
       data: {
         title: form[0].value,
         experiences: [],
@@ -287,7 +288,7 @@ function App() {
     if (user) {
       const options = {
         method: "get",
-        url: `http://localhost:5000/fetchExperience/${user.id}`,
+        url: `/fetchExperience/${user.id}`,
         headers: {
           "Content-type": "application/json",
         },
@@ -308,7 +309,7 @@ function App() {
     if (user) {
       const options = {
         method: "get",
-        url: `http://localhost:5000/fetchAllCollections/${user.id}`,
+        url: `/fetchAllCollections/${user.id}`,
         headers: {
           "Content-type": "application/json",
         },
@@ -332,7 +333,7 @@ function App() {
     ) {
       const options = {
         method: "get",
-        url: "http://localhost:5000/getUserInfo",
+        url: "/getUserInfo",
         headers: {
           "x-access-token": localStorage.getItem("token"),
         },
@@ -378,17 +379,11 @@ function App() {
         <div className="container-xxl">
           <div className="row">
             <div className="col-3">
-              <ExperienceForm
-                collectionSelect={collectionSelect}
-                handleCreateExperience={handleCreateExperience}
-              />
+              <ExperienceForm collectionSelect={collectionSelect} handleCreateExperience={handleCreateExperience} />
             </div>
             <div className="col-9">
               <div className="container">
-                <CollectionForm
-                  handleCreateCollection={handleCreateCollection}
-                />
-                <br></br>
+                <CollectionForm handleCreateCollection={handleCreateCollection} />
                 <ExperienceDisplay collections={collectionElements} />
               </div>
             </div>
@@ -396,9 +391,7 @@ function App() {
           <ImageModal displayImage={displayImage} displayName={displayName} />
         </div>
       ) : (
-        <div className="container-fluid" style={{ maxWidth: "500px" }}>
-          <p>Log in/Sign up to keep track of your favorite life experiences</p>
-        </div>
+        <LoginPrompt />
       )}
     </div>
   );
