@@ -26,7 +26,7 @@ function ExperienceForm(props) {
   
 
   return (
-      <form onSubmit={(e) => props.handleCreateExperience(e)}>
+      <form onSubmit={(e) => props.handleCreateExperience(e)} className="mb-4 pt-4 sticky-top ">
         <div className="mb-3">
           <label htmlFor="experienceTitle" className="form-label">
             Experience Name

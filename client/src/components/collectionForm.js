@@ -1,6 +1,6 @@
 function CollectionForm(props) {
     return (
-        <form className="row mb-4" onSubmit={e => props.handleCreateCollection(e)}>
+        <form className="row mb-4 pt-4 sticky-top bg-white" onSubmit={e => props.handleCreateCollection(e)}>
                 <label htmlFor='collectionName' className='form-label'>Collection Name</label>
             <div className="col col-xxl-10">
                 <input required type="text" className='form-control' id='collectionName'></input>

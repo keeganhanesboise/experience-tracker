@@ -30,16 +30,17 @@ function Navbar() {
   }, []);
 
   function checkToken() {
-    return localStorage.getItem("token") && localStorage.getItem("token") !== 'undefined';
+    return (
+      localStorage.getItem("token") && 
+      localStorage.getItem("token") !== 'undefined'
+    );
   }
 
   return (
     <div>
-      <nav className="navbar navbar-dark bg-dark fixed-top">
+      <nav className="navbar navbar-dark bg-dark">
         <div className="container-fluid">
-          <a className="navbar-brand" href="/">
-            Experience Tracker
-          </a>
+          <a className="navbar-brand" href="/">Experience Tracker</a>
           <button
             className="navbar-toggler"
             type="button"
@@ -57,13 +58,9 @@ function Navbar() {
           >
             <div className="offcanvas-header">
               {checkToken() ? (
-                <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">
-                  Hello {username}!
-                </h5>
+                <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">Hello {username}!</h5>
               ) : (
-                <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">
-                  Log In or Sign Up
-                </h5>
+                <h5 className="offcanvas-title" id="offcanvasDarkNavbarLabel">Log In or Sign Up</h5>
               )}
               <button
                 type="button"
@@ -84,14 +81,10 @@ function Navbar() {
               ) : (
                 <ul className="navbar-nav justify-content-end flex-grow-1 pe-3">
                   <li className="nav-item">
-                    <Link className="nav-link" to="/login">
-                      Log in
-                    </Link>
+                    <Link className="nav-link" to="/login">Log in</Link>
                   </li>
                   <li className="nav-item">
-                    <Link className="nav-link" to="/register">
-                      Sign up
-                    </Link>
+                    <Link className="nav-link" to="/register">Sign up</Link>
                   </li>
                 </ul>
               )}
@@ -99,12 +92,6 @@ function Navbar() {
           </div>
         </div>
       </nav>
-      <nav className="navbar navbar-dark bg-dark">
-        <a className="navbar-brand" href="/">
-          Experience Tracker
-        </a>
-      </nav>
-      <br></br>
     </div>
   );
 }
