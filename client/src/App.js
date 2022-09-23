@@ -6,7 +6,8 @@ import ExperienceDisplay from "./components/experienceDisplay";
 import CollectionForm from "./components/collectionForm";
 import ImageModal from "./components/imageModal";
 import LoginPrompt from "./components/loginPrompt";
-import "./App.css";
+import Experience from "./components/experience";
+import Collection from "./components/collection";
 
 function App() {
   const [collectionData, setCollectionData] = useState();
@@ -17,6 +18,10 @@ function App() {
   const [displayName, setDisplayName] = useState();
   const [user, setUser] = useState();
 
+  /**
+   * 
+   * @returns JSON web token status
+   */
   function checkToken() {
     return (
       localStorage.getItem("token") &&
@@ -24,33 +29,41 @@ function App() {
     );
   }
 
+  /**
+   * Helper method for setting collection and experience data
+   */
   function updateData() {
-    getCollectionsAndExperiences().then(([collections, experiences]) => {
-      if (collections && experiences) {
-        if (!collections.message) {
-          setCollectionData(collections);
-        } else {
-          setCollectionData();
-          setCollectionElements();
-          setCollectionSelect();
+    getCollectionsAndExperiences()
+      .then(([collections, experiences]) => {
+        if (collections && experiences) {
+          if (!collections.message) {
+            setCollectionData(collections);
+          } else {
+            setCollectionData();
+            setCollectionElements();
+            setCollectionSelect();
+          }
+          if (!experiences.message) {
+            setExperienceData(experiences);
+          } else {
+            setExperienceData();
+            setCollectionElements();
+          }
         }
-        if (!experiences.message) {
-          setExperienceData(experiences);
-        } else {
-          setExperienceData();
-          setCollectionElements();
-        }
-      }
-    });
+      });
   }
 
-  function getImage(experience) {
+  /**
+   * Set modal title and image
+   * @param {object} experience 
+   */
+  function setImageModal(experience) {
     setDisplayName(experience.title);
     setDisplayImage(`https://storage.googleapis.com/experience-images/${experience.image}`);
   }
 
   /**
-   * Delete an experience
+   * Delete experience
    * @param {number} id - unqiue experience identifier
    */
   function removeExperience(id) {
@@ -104,10 +117,10 @@ function App() {
   }
 
   /**
-   * Delete a collection
+   * Delete collection
    * @param {object} collection - entire collection object
    */
-  function removeCollection(collection) {
+   function removeCollection(collection) {
     let experiences = collection.experiences;
     if (experiences.length > 0) {
       experiences.forEach((experience) => {
@@ -127,6 +140,7 @@ function App() {
       .then((res) => updateData(res))
       .catch((err) => console.log(err));
   }
+
 
   /**
    * Create new collection
@@ -157,7 +171,7 @@ function App() {
   }
 
   /**
-   * Create and set experience JSX elements
+   * Converts experience objects to JSX elements
    * @param {array} data - users experiences
    */
   function handleExperienceData(data) {
@@ -170,37 +184,14 @@ function App() {
         date = experience.date.slice(0, index);
       }
       expereinceArray.push(
-        <tr key={experience._id}>
-          <th scope="row">{rowCounter}</th>
-          <td>{experience.title}</td>
-          <td>{date}</td>
-          <td>{experience.location}</td>
-          <td>{experience.description}</td>
-          {experience.image ? 
-          <td
-            type="button"
-            className="btn"
-            data-bs-toggle="modal"
-            data-bs-target="#exampleModal"
-            onClick={() => getImage(experience)}
-          >
-            <img
-              style={{ width: "30px", height: "30px" }}
-              alt="experience"
-              src={`https://storage.googleapis.com/experience-images/${experience.image}`}
-            ></img>
-          </td>
-          :
-          null
-          }
-          <td
-            type="button"
-            onClick={() => removeExperience(experience._id)}
-            className="btn btn-sm"
-          >
-            x
-          </td>
-        </tr>
+        <Experience 
+          key={experience._id}
+          experience={experience} 
+          rowCounter={rowCounter} 
+          date={date} 
+          setImageModal={setImageModal} 
+          removeExperience={removeExperience}
+        />
       );
       rowCounter++;
     });
@@ -208,81 +199,7 @@ function App() {
   }
 
   /**
-   * Create and set collection JSX elements
-   * @param {array} data - users collections
-   */
-  function handleCollectionData() {
-    if (!collectionData.message) {
-      let collectionArray = [];
-      let collectionSelectArray = [];
-      collectionData.forEach((collection) => {
-        collectionSelectArray.push(
-          <option key={collection._id} value={collection._id}>
-            {collection.title}
-          </option>
-        );
-        let experiences;
-        if (collection.experiences.length > 0) {
-          experiences = handleExperienceData(collection.experiences);
-        }
-        collectionArray.push(
-          <div key={collection._id}>
-            <div
-              className="row justify-content-between"
-              style={{ width: "100%" }}
-            >
-              <div className="col">
-                <h3>{collection.title}</h3>
-              </div>
-              <div className="col-1">
-                <button
-                  type="button"
-                  onClick={() => removeCollection(collection)}
-                  className="btn btn-outline-danger btn-sm"
-                >
-                  Remove
-                </button>
-              </div>
-            </div>
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col"></th>
-                  <th scope="col">Name</th>
-                  <th scope="col">Date</th>
-                  <th scope="col">Location</th>
-                  <th scope="col">Description</th>
-                  <th scope="col"></th>
-                </tr>
-              </thead>
-              <tbody>{experiences}</tbody>
-            </table>
-          </div>
-        );
-      });
-      setCollectionElements(collectionArray);
-      setCollectionSelect(collectionSelectArray);
-    }
-  }
-
-  /**
-   * Add experience to their corresponding collection
-   */
-  function combine() {
-    if (!experienceData.message) {
-      let tempCollectionData = collectionData;
-      experienceData.forEach((experience) => {
-        const collection = tempCollectionData.find(
-          (element) => element._id === experience.collectionId
-        );
-        collection.experiences.push(experience);
-      });
-      setCollectionData(tempCollectionData);
-    }
-  }
-
-  /**
-   * Fetch experiences for logged in user
+   * Fetch experience(s) for current user
    */
   function fetchExperience() {
     if (user) {
@@ -303,7 +220,7 @@ function App() {
   }
 
   /**
-   * Fetch collections for logged in user
+   * Fetch collection(s) for current user
    */
   async function fetchAllCollections() {
     if (user) {
@@ -323,13 +240,13 @@ function App() {
     }
   }
 
-  /**
-   * Fetch logged in user
-   */
-  function fetchUser() {
+  function getCollectionsAndExperiences() {
+    return Promise.all([fetchAllCollections(), fetchExperience()]);
+  }
+
+  useEffect(() => {
     if (
-      localStorage.getItem("token") &&
-      localStorage.getItem("token") !== "undefined"
+      checkToken()
     ) {
       const options = {
         method: "get",
@@ -343,14 +260,6 @@ function App() {
         .then((res) => setUser(res.data))
         .catch((err) => console.log(err));
     }
-  }
-
-  function getCollectionsAndExperiences() {
-    return Promise.all([fetchAllCollections(), fetchExperience()]);
-  }
-
-  useEffect(() => {
-    fetchUser();
   }, []);
 
   useEffect(() => {
@@ -358,18 +267,56 @@ function App() {
     // eslint-disable-next-line
   }, [user]);
 
+  /**
+   * Add experience(s) to their corresponding collection
+   */
   useEffect(() => {
     if (experienceData) {
-      combine();
+      if (!experienceData.message) {
+        let tempCollectionData = collectionData;
+        experienceData.forEach((experience) => {
+          const collection = tempCollectionData.find(
+            (element) => element._id === experience.collectionId
+          );
+          collection.experiences.push(experience);
+        });
+        setCollectionData(tempCollectionData);
+      }
     }
-    // eslint-disable-next-line
   }, [experienceData, collectionData]);
-
+  
+  /**
+   * Converts collection objects to JSX elements
+   * @param {array} data - users collections
+   */
   useEffect(() => {
     if (collectionData) {
-      handleCollectionData();
+      if (!collectionData.message) {
+        let collectionArray = [];
+        let collectionSelectArray = [];
+        collectionData.forEach((collection) => {
+          collectionSelectArray.push(
+            <option key={collection._id} value={collection._id}>
+              {collection.title}
+            </option>
+          );
+          let experiences;
+          if (collection.experiences.length > 0) {
+            experiences = handleExperienceData(collection.experiences);
+          }
+          collectionArray.push(
+            <Collection 
+              key={collection._id}
+              collection={collection} 
+              experiences={experiences} 
+              removeCollection={removeCollection}
+            />
+          );
+        });
+        setCollectionElements(collectionArray);
+        setCollectionSelect(collectionSelectArray);
+      }
     }
-    // eslint-disable-next-line
   }, [collectionData]);
 
   return (
